@@ -1,9 +1,14 @@
 #!/bin/bash
 
-RESULTS_PATH=/Users/anashif/zephyr/zephyrproject/test_results/results/
-ZEPHYR_PATH=/Users/anashif/zephyr/zephyrproject/zephyr
-INFLUX_DB=influxdb://10.0.1.4/twister1
+RESULTS_PATH=/home/nashif/testing/test_results/results/
+ZEPHYR_PATH=/var/www/tudiya.site/tools/repos/zephyr/
+INFLUX_DB=influxdb://localhost:8086/zephyr_test_results
 RUN=$1
+
+export PYTHONPATH=$PWD/junit2influx-0.2.1:$PYTHONPATH
+
+git -C $ZEPHYR_PATH pull --rebase
+git -C $RESULTS_PATH pull --rebase
 
 if [ -z "$RUN" ]; then
 	for f in `ls -1 $RESULTS_PATH`; do

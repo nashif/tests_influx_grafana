@@ -1,11 +1,11 @@
-influxdb
 click
+influxdb
 
 [dev]
+pyroma==2.0
 pytest
 wheel
 zest.releaser[recommended]
-pyroma==2.0
 
 [lint]
 prospector[with_pyroma]
