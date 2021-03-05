@@ -1,0 +1,16 @@
+influxdb
+click
+
+[dev]
+pytest
+wheel
+zest.releaser[recommended]
+pyroma==2.0
+
+[lint]
+prospector[with_pyroma]
+
+[test]
+pytest
+pytest-cov
+pytest-mock
