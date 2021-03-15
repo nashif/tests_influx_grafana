@@ -43,3 +43,26 @@ There are 2 ways the import script can be called:
 - Commit import: Only import new files that are part of a single commit. The
   first argument should be a commit hash in the test_results repo
 
+
+
+## Using Docker Compose
+
+To start the app:
+
+1. Install [docker-compose](https://docs.docker.com/compose/install/) on the docker host.
+1. Optionally, change default credentials or Grafana provisioning.
+1. Run the following command from the root of the cloned repo:
+```
+docker-compose up -d
+```
+
+To stop the app:
+
+1. Run the following command from the root of the cloned repo:
+```
+docker-compose down
+```
+
+Grafana will be accessible on the localhost on port 3000.
+
+Import the data using the ``import.sh`` script.
