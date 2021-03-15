@@ -1,4 +1,3 @@
-
 # Zephyr Hardware Results Dashboard
 
 First you will need to install both grafana and influxdb and verify that you
@@ -13,7 +12,10 @@ In influxdb create a database that will host the test results and call it `zephy
 
 In grafana, create a new data source and add the above database you have just created.
 
-In grafana, import the dashboards available in dashboards/ directory.
+In grafana, import the dashboards available in grafana-provisioning/dashboards/ directory.
+
+- overall.json
+- test_results.json
 
 Clone both repos:
 
