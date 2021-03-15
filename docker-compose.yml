@@ -1,7 +1,7 @@
 version: '2'
 services:
   influxdb:
-    image: influxdb:latest
+    image: influxdb:1.8
     ports:
       - '8086:8086'
     volumes:
@@ -34,6 +34,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,digrich-bubblechart-panel
 volumes:
   influxdb-storage:
   chronograf-storage:
