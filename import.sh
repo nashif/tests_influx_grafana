@@ -1,14 +1,14 @@
 #!/bin/bash
 
-RESULTS_REPO_PATH=/home/nashif/testing/test_results
-RESULTS_DIR=$RESULTS_DIR
-ZEPHYR_REPO_PATH=/var/www/tudiya.site/tools/repos/zephyr/
+RESULTS_REPO_PATH=/home/nashif/Work/zephyrproject/test_results
+RESULTS_DIR=$RESULTS_REPO_PATH/results
+ZEPHYR_REPO_PATH=/home/nashif/Work/zephyrproject/zephyr
 INFLUX_DB=influxdb://localhost:8086/zephyr_test_results
 RUN=$1
 
 export PYTHONPATH=$PWD/junit2influx-0.2.1:$PYTHONPATH
 
-git -C $ZEPHYR_PATH pull --rebase
+git -C $ZEPHYR_REPO_PATH pull --rebase
 git -C $RESULTS_REPO_PATH pull --rebase
 
 if [ -z "$RUN" ]; then
@@ -17,7 +17,7 @@ if [ -z "$RUN" ]; then
 			for ff in `ls -1 $RESULTS_DIR/$f`; do
 				platform=$(basename $ff .xml)
 				echo "$f ($platform)"
-				d=$(git -C $ZEPHYR_PATH log --format=%ct --date=local $f^..$f)
+				d=$(git -C $ZEPHYR_REPO_PATH log --format=%ct --date=local $f^..$f)
 				echo $d
 				junit2influx $RESULTS_DIR/$f/$ff --timestamp "$d" --tag platform=$platform --tag version=$f --influxdb-url $INFLUX_DB
 				sleep 2
@@ -26,9 +26,10 @@ if [ -z "$RUN" ]; then
 	done
 elif [ -d $RESULTS_DIR/$RUN ]; then
 	for p in `ls -1 $RESULTS_DIR/$RUN`; do
+		echo $p
 		platform=$(basename $p .xml)
 		echo "$RUN ($platform)"
-		d=$(git -C $ZEPHYR_PATH log --format=%ct --date=local $RUN^..$RUN)
+		d=$(git -C $ZEPHYR_REPO_PATH log --format=%ct --date=local $RUN^..$RUN)
 		echo $d
 		junit2influx $RESULTS_DIR/$RUN/$p --timestamp "$d" --tag platform=$platform --tag version=$RUN --influxdb-url $INFLUX_DB
 		sleep 2
@@ -40,7 +41,7 @@ else
 		platform=$(basename $f .xml)
 		version_=$(dirname $f)
 		version=$(basename $version_)
-		d=$(git -C $ZEPHYR_PATH log --format=%ct --date=local $version^..$version)
+		d=$(git -C $ZEPHYR_REPO_PATH log --format=%ct --date=local $version^..$version)
 		junit2influx $RESULTS_REPO_PATH/$f --timestamp "$d" --tag platform=$platform --tag version=$version --influxdb-url $INFLUX_DB
 		sleep 2
 	done
