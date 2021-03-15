@@ -4,7 +4,16 @@
 First you will need to install both grafana and influxdb and verify that you
 can connect to databases created in influxdb from grafana.
 
-In influxdb create a database that will host the test results.
+In influxdb create a database that will host the test results and call it `zephyr_test_results`. This can be done using the command line tools for influxdb.
+
+	nashif@master:~$ influx
+	Connected to http://localhost:8086 version 1.8.4
+	InfluxDB shell version: 1.8.4
+	> CRATE DATABASE zephyr_test_result
+
+In grafana, create a new data source and add the above database you have just created.
+
+In grafana, import the dashboards available in dashboards/ directory.
 
 Clone both repos:
 
