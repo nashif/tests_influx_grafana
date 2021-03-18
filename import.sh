@@ -30,8 +30,10 @@ elif [ -d $RESULTS_DIR/$RUN ]; then
 		platform=$(basename $p .xml)
 		echo "$RUN ($platform)"
 		d=$(git -C $ZEPHYR_REPO_PATH log --format=%ct --date=local $RUN^..$RUN)
-		echo $d
-		junit2influx $RESULTS_DIR/$RUN/$p --timestamp "$d" --tag platform=$platform --tag version=$RUN --influxdb-url $INFLUX_DB
+		./check.py -d $INFLUX_DB -p $platform -c $RUN
+		if [ "$?" == 0 ]; then
+			junit2influx $RESULTS_DIR/$RUN/$p --timestamp "$d" --tag platform=$platform --tag version=$RUN --influxdb-url $INFLUX_DB
+		fi
 		sleep 2
 	done
 
