@@ -26,13 +26,15 @@ if [ -z "$RUN" ]; then
 	done
 elif [ -d $RESULTS_DIR/$RUN ]; then
 	for p in `ls -1 $RESULTS_DIR/$RUN`; do
-		echo $p
 		platform=$(basename $p .xml)
 		echo "$RUN ($platform)"
 		d=$(git -C $ZEPHYR_REPO_PATH log --format=%ct --date=local $RUN^..$RUN)
 		./check.py -d $INFLUX_DB -p $platform -c $RUN
-		if [ "$?" == 0 ]; then
+		if [ "$?" == "1" ]; then
+			echo "Importing $platform"
 			junit2influx $RESULTS_DIR/$RUN/$p --timestamp "$d" --tag platform=$platform --tag version=$RUN --influxdb-url $INFLUX_DB
+		else
+			echo "Not importing existing platform"
 		fi
 		sleep 2
 	done

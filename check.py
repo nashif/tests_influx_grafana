@@ -11,8 +11,8 @@ def parse_args():
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-c", "--commit", required=True,
                         help="commit sha")
-    parser.add_argument("-p", "--platform", help="Platform name")
-    parser.add_argument("-d", "--database-url", help="Database DSN")
+    parser.add_argument("-p", "--platform", help="Platform name", required=True)
+    parser.add_argument("-d", "--database-url", help="Database DSN", required=True)
     args = parser.parse_args()
 
 
@@ -29,5 +29,7 @@ if not influxdb_url or not version or not platform:
 client = influxdb.InfluxDBClient.from_dsn(influxdb_url)
 result = client.query(f"select * from builds where version = '{version}' and platform = '{platform}'")
 
-if not result:
+if result:
+    sys.exit(0)
+else:
     sys.exit(1)
